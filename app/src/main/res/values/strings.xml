@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Frapps</string>
+    <string name="servicio_top_free_apps">https://itunes.apple.com/us/rss/topfreeapplications/limit=20/json</string>
+    <string name="alimentandonos_de_informaci_n">Alimentandonos de información…</string>
+</resources>
