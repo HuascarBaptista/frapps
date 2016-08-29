@@ -14,6 +14,7 @@ import com.hebs.frapps.R;
  * Date: 28/8/2016
  * Time: 7:05 PM
  */
+//El recyclerview
 public class RecyclerViewHolders extends RecyclerView.ViewHolder {
 
     public TextView titulo;

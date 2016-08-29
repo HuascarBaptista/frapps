@@ -13,6 +13,7 @@ import io.realm.RealmConfiguration;
  * Time: 3:46 AM
  */
 public class UniversalModel {
+    //Creo la conexion a la bd
     public static Realm crearConexion(Context context) {
         RealmConfiguration config = new RealmConfiguration.Builder(context)
                 .name("grabilityhebs.realm")
@@ -24,10 +25,4 @@ public class UniversalModel {
     }
 
 
-    public static void todaInformacion(Context context) {
-        InformacionAlmacenada _nueva = new InformacionAlmacenada();
-        _nueva.set_apps(AppModel.obtenerTodas(context));
-        _nueva.set_categorias(CategoriaModel.obtenerTodas(context));
-        _nueva.set_artistas(ArtistaModel.obtenerTodas(context));
-    }
 }

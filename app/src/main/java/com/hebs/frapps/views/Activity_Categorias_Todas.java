@@ -1,17 +1,19 @@
 package com.hebs.frapps.views;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 
 import com.hebs.frapps.R;
-import com.hebs.frapps.presenters.CategoriasAppsPresenter;
+import com.hebs.frapps.presenters.CategoriasTodasPresenter;
 import com.hebs.frapps.utils.MyShared_;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.UiThread;
@@ -22,7 +24,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 @Fullscreen
 @WindowFeature({Window.FEATURE_NO_TITLE})
-@EActivity(R.layout.activity_categorias_apps)
+@EActivity(R.layout.activity_categorias_todas)
 public class Activity_Categorias_Todas extends BaseActivity {
 
     @ViewById(R.id.recyclerview)
@@ -35,34 +37,61 @@ public class Activity_Categorias_Todas extends BaseActivity {
     public RecyclerView.Adapter recyclerAdapter;
     @Pref
     public MyShared_ myPrefs;
+    @ViewById
+    LinearLayout linear_actualizar;
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawer;
-    private CategoriasAppsPresenter categoriasAppsPresenter;
 
-    @Background
+    @ViewById
+    AppBarLayout appbarLayout;
+
+    private CategoriasTodasPresenter categoriasTodasPresenter;
+
+    //Usarlop para cuano no haya internet y no tenia data
+    @Click(R.id.linear_actualizar)
+    public void actualizarNuevamente() {
+        cargarData();
+    }
+
     public void cargarInformacion() {
-        categoriasAppsPresenter = new CategoriasAppsPresenter(this);
-        categoriasAppsPresenter.obtenerInformacion();
+        if (categoriasTodasPresenter == null)
+            categoriasTodasPresenter = new CategoriasTodasPresenter(this);
+        categoriasTodasPresenter.obtenerInformacion();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupWindowInAnimations();
 
-        super.setDrawer(drawer);
-        super.cargarAppBar();
     }
 
+    //Ve si pudo cargar la data o si tiene q mostrar el boton de actualizar
     @UiThread
-    public void informacionActualizada() {
+    public void informacionActualizada(boolean data) {
 
+        if (data) {
+            linear_actualizar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            appbarLayout.setVisibility(View.VISIBLE);
+
+            super.setDrawer(drawer);
+            super.cargarAppBar(true, getString(R.string.categorias));
+        } else {
+            linear_actualizar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            appbarLayout.setVisibility(View.GONE);
+
+        }
 
         cargandoCustomDialog(false);
     }
 
 
     @AfterViews
-    public void cargarAppBar() {
+    public void cargarData() {
+
+
         cargandoCustomDialog(true);
         cargarInformacion();
 

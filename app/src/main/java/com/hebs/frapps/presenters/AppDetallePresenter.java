@@ -1,11 +1,15 @@
 package com.hebs.frapps.presenters;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hebs.frapps.R;
 import com.hebs.frapps.models.AppModel;
 import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.views.Activity_App_Detalle;
@@ -35,18 +39,46 @@ public class AppDetallePresenter {
     }
 
 
-    public boolean llenarInformacion(int idApp, TextView titulo_app, ImageView icono_app, TextView desarrollador_app, TextView descripcion, FloatingActionButton compartir) {
-        Apps _app = AppModel.obtenerAppPorId(get_view(), idApp);
+    //Llenoi toda la infoirmacion y seteo los clicks
+    public boolean llenarInformacion(int idApp, TextView titulo_app, ImageView icono_app, TextView desarrollador_app, TextView descripcion, FloatingActionButton compartir, TextView url_app) {
+        final Apps _app = AppModel.obtenerAppPorId(get_view(), idApp);
 
         if (_app != null) {
             titulo_app.setText(_app.get_nombre());
             descripcion.setText(_app.get_descripcion());
             desarrollador_app.setText(_app.get_creador().get_firma());
-            //.name("benotto.realm")
+
+            //Descaego la imagen
             if (!_app.get_imagen().equals(""))
                 Ion.with(icono_app)
                         .animateIn(AnimationUtils.loadAnimation(get_view(), android.R.anim.fade_in))
                         .load(_app.get_imagen());
+
+            get_view().cambiarAppBarTitle(_app.get_nombre());
+
+
+            //Es una url y la seteo para q la pueda abrir en un explorador
+            url_app.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(_app.get_link()));
+                    get_view().startActivity(i);
+                }
+            });
+
+            //El action de compartir
+            compartir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = get_view().getString(R.string.compartirTexto, _app.get_nombre(), _app.get_creador().get_nombre(), _app.get_link());
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, _app.get_nombre() + " " + get_view().getString(R.string.app_name));
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    get_view().startActivity(Intent.createChooser(sharingIntent, get_view().getString(R.string.compartirPor)));
+                }
+            });
 
             return true;
         }

@@ -10,10 +10,11 @@ import com.google.gson.JsonObject;
 import com.hebs.frapps.R;
 import com.hebs.frapps.adapters.CategoriasAdapter;
 import com.hebs.frapps.models.AppModel;
-import com.hebs.frapps.models.ArtistaModel;
 import com.hebs.frapps.models.CategoriaModel;
-import com.hebs.frapps.models.modelsRealm.Artistas;
+import com.hebs.frapps.models.CreadorModel;
+import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.models.modelsRealm.Categorias;
+import com.hebs.frapps.models.modelsRealm.Creadores;
 import com.hebs.frapps.views.Activity_Categorias_Todas;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -21,9 +22,11 @@ import com.novoda.merlin.MerlinsBeard;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
-import io.realm.RealmResults;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * Created by Android Studio.
@@ -32,13 +35,13 @@ import io.realm.RealmResults;
  * Date: 25/8/2016
  * Time: 3:51 AM
  */
-public class CategoriasAppsPresenter {
+public class CategoriasTodasPresenter {
 
     private Activity_Categorias_Todas _view;
     private MerlinsBeard merlinsBeard;
 
 
-    public CategoriasAppsPresenter(Activity_Categorias_Todas view) {
+    public CategoriasTodasPresenter(Activity_Categorias_Todas view) {
         this._view = view;
 
     }
@@ -51,6 +54,7 @@ public class CategoriasAppsPresenter {
         this._view = _view;
     }
 
+    //Pregunto si tengo internet y me descargo la data del server
     public void obtenerInformacion() {
 
         merlinsBeard = MerlinsBeard.from(this._view.getBaseContext());
@@ -72,10 +76,10 @@ public class CategoriasAppsPresenter {
 
                                     }
                                 } else {
-                                    Toast.makeText(get_view(), "El servicio no emitió respuesta alguna.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(get_view(), get_view().getString(R.string.servicio_no_emitio), Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(get_view(), "Lo sentimos hubo un error en el servicio. " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(get_view(), get_view().getString(R.string.servicio_error) + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             manejarInformacion();
 
@@ -83,7 +87,7 @@ public class CategoriasAppsPresenter {
                         }
                     });
         } else {
-            Snackbar.make(get_view().vista_superior, "No posee conexión a internet.", Snackbar.LENGTH_LONG)
+            Snackbar.make(get_view().vista_superior, get_view().getString(R.string.sin_conexion), Snackbar.LENGTH_LONG)
                     .show();
             //Llamar a la vista para que actualice
             manejarInformacion();
@@ -114,15 +118,27 @@ public class CategoriasAppsPresenter {
         get_view().recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        RealmResults<Categorias> data = CategoriaModel.obtenerTodasXNombre(get_view(), true);
+        HashMap<String, ArrayList<Apps>> _hashDeApps = new HashMap<>();
+        ArrayList<String> _titulos = new ArrayList<>();
+        //Creo mi vista de dos recyclers, uno vertical y otro horizontal
+        BasePresenter.obtenerInformacionEnHash(get_view(), _titulos, _hashDeApps, false, true, false);
 
-        get_view().recyclerAdapter = new CategoriasAdapter(get_view(), data, _grid);
+        get_view().recyclerAdapter = new CategoriasAdapter(get_view(), _titulos, _grid, _hashDeApps, false);
+        get_view().recyclerView.setItemAnimator(new SlideInUpAnimator());
+
         get_view().recyclerView.setAdapter(get_view().recyclerAdapter);
 
-        get_view().informacionActualizada();
+        //Depenjdeiendo de si tiene data o no
+        if (_titulos.size() <= 0)
+            get_view().informacionActualizada(false);
+        else
+            get_view().informacionActualizada(true);
+
 
 
     }
+
+    //Guardo toda la info de las apps en una bd local
     private void guardarInformacion(JsonObject s) {
         if (s.has("feed"))
             if (s.getAsJsonObject("feed").has("entry")) {
@@ -136,10 +152,10 @@ public class CategoriasAppsPresenter {
                 String link = "";
                 String fechaString = "";
                 Date fechaCreacion;
-                String nombreArtista = "";
-                String linkArtista = "";
-                String firmaArtista = "";
-                Artistas artista;
+                String nombreCreador = "";
+                String linkCreador = "";
+                String firmaCreador = "";
+                Creadores creador;
                 String icono = "";
                 String imagen = "";
                 String imagen_pequena="";
@@ -153,10 +169,10 @@ public class CategoriasAppsPresenter {
                     link = "";
                     fechaString = "";
                     fechaCreacion = null;
-                    nombreArtista = "";
-                    linkArtista = "";
-                    firmaArtista = "";
-                    artista = null;
+                    nombreCreador = "";
+                    linkCreador = "";
+                    firmaCreador = "";
+                    creador = null;
                     icono = "";
                     imagen = "";
 
@@ -221,20 +237,20 @@ public class CategoriasAppsPresenter {
                     if (_app.has("im:artist")) {
 
                         if (_app.getAsJsonObject("im:artist").has("label")) {
-                            nombreArtista = _app.getAsJsonObject("im:artist").get("label").getAsString();
+                            nombreCreador = _app.getAsJsonObject("im:artist").get("label").getAsString();
                             if (_app.getAsJsonObject("im:artist").has("attributes")) {
                                 if (_app.getAsJsonObject("im:artist").getAsJsonObject("attributes").has("href")) {
-                                    linkArtista = _app.getAsJsonObject("im:artist").getAsJsonObject("attributes").get("href").getAsString();
+                                    linkCreador = _app.getAsJsonObject("im:artist").getAsJsonObject("attributes").get("href").getAsString();
                                 }
                             }
 
                             if (_app.has("rights")) {
 
                                 if (_app.getAsJsonObject("rights").has("label")) {
-                                    firmaArtista = _app.getAsJsonObject("rights").get("label").getAsString();
+                                    firmaCreador = _app.getAsJsonObject("rights").get("label").getAsString();
                                 }
                             }
-                            artista = ArtistaModel.crearActualizarArtista(get_view(), nombreArtista, linkArtista, firmaArtista);
+                            creador = CreadorModel.crearActualizarCreador(get_view(), nombreCreador, linkCreador, firmaCreador);
                         }
                     }
                     if (_app.has("im:image")) {
@@ -256,7 +272,7 @@ public class CategoriasAppsPresenter {
 
                     }
 
-                    AppModel.crearApp(get_view(), _categoria, id, nombre, nombreLargo, descripcion, link, fechaCreacion, artista, icono, imagen_pequena, imagen);
+                    AppModel.crearApp(get_view(), _categoria, id, nombre, nombreLargo, descripcion, link, fechaCreacion, creador, icono, imagen_pequena, imagen);
 
                 }
                 get_view().myPrefs.json_top_free_apps().put(s.toString());
@@ -265,11 +281,4 @@ public class CategoriasAppsPresenter {
     }
 
 
-
-    /*public void pruebaAgregarCategoria(){
-        CategoriaModel.crearActualizarCategorica(get_view(),1,"Probando ");
-        CategoriaModel.crearActualizarCategoria(get_view(),2,"Lol ");
-        CategoriaModel.crearActualizarCategoria(get_view(),3,"Tercero");
-        CategoriaModel.crearActualizarCategoria(get_view(),2,"Pap ");
-    }*/
 }

@@ -1,14 +1,15 @@
 package com.hebs.frapps.models;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.hebs.frapps.models.modelsRealm.Apps;
-import com.hebs.frapps.models.modelsRealm.Artistas;
 import com.hebs.frapps.models.modelsRealm.Categorias;
+import com.hebs.frapps.models.modelsRealm.Creadores;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -28,13 +29,14 @@ public class AppModel {
                                 final String descripcion,
                                 final String link,
                                 final Date fechaCreacion,
-                                final Artistas creador,
+                                final Creadores creador,
                                 final String icono,
                                 final String imagen_pequena,
                                 final String imagen) {
 
         Realm realm = UniversalModel.crearConexion(context);
 
+        //Guardo la informacion del servidor, o la actualizo dependeineod
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -47,7 +49,6 @@ public class AppModel {
                     app = result;
                 }
                 app.set_nombre(nombre);
-                Log.e("NombreLargo", nombreLargo + " Corto " + nombre);
                 app.set_nombreLargo(nombreLargo);
                 app.set_descripcion(descripcion);
                 app.set_link(link);
@@ -72,12 +73,10 @@ public class AppModel {
         return _resultado;
     }
 
-    public static Apps obtenerCategoriaPorNombre(Context context, String nombre) {
+    public static RealmResults<Apps> obtenerAppsPorNombre(Context context, String nombre) {
         Realm realm = UniversalModel.crearConexion(context);
 
-        Apps _resultado = realm.where(Apps.class).equalTo("_nombre", nombre).findFirst();
-
-        return _resultado;
+        return realm.where(Apps.class).contains("_nombre", nombre, Case.INSENSITIVE).findAllSorted("_nombre");
     }
 
 
@@ -114,5 +113,17 @@ public class AppModel {
 
         return _resultado;
 
+    }
+
+    public static ArrayList<Apps> buscarAppPorCreador(Context context, String creador) {
+        Realm realm = UniversalModel.crearConexion(context);
+
+        RealmResults<Apps> _resultado = realm.where(Apps.class).equalTo("_creador._nombre", creador).findAllSorted("_nombre");
+
+        ArrayList<Apps> _apps = new ArrayList<>();
+        for (int i = 0; i < _resultado.size(); i++) {
+            _apps.add(_resultado.get(i));
+        }
+        return _apps;
     }
 }

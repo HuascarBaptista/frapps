@@ -1,5 +1,8 @@
 package com.hebs.frapps.models.modelsRealm;
 
+import org.parceler.Parcel;
+
+import io.realm.CreadoresRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,7 +13,10 @@ import io.realm.annotations.PrimaryKey;
  * Date: 25/8/2016
  * Time: 3:31 AM
  */
-public class Artistas extends RealmObject {
+@Parcel(implementations = {CreadoresRealmProxy.class},
+        value = Parcel.Serialization.BEAN,
+        analyze = {Creadores.class})
+public class Creadores extends RealmObject {
     @PrimaryKey
     private String _nombre;
 
@@ -18,7 +24,7 @@ public class Artistas extends RealmObject {
 
     private String _firma;
 
-    public Artistas() {
+    public Creadores() {
     }
 
     public String get_nombre() {

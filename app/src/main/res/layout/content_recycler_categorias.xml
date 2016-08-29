@@ -5,9 +5,13 @@
     android:layout_margin="15dp"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:id="@+id/irCategoriaText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tituloCategoria"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="15dp"
@@ -16,10 +20,31 @@
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/text_22" />
 
+        <TextView
+            android:id="@+id/verMas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/ver_m_s"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_15" />
+    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerviewInside"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#d9d9d9"></View>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 
+//Layout q saca la cantidad de columnas en base al ancho del lemento
 public class GridAutofitLayoutManager extends GridLayoutManager {
     private int mColumnWidth;
     private boolean mColumnWidthChanged = true;

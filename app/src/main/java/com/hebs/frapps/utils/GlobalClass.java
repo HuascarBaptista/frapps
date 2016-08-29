@@ -19,6 +19,7 @@ public class GlobalClass extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //Para visualizar Stehto
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))

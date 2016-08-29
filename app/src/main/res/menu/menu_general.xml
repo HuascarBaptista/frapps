@@ -8,13 +8,6 @@
         android:id="@+id/menu_opcion_desarrolladores"
         android:icon="@drawable/icon_work"
         android:title="@string/desarrolladores" />
-    <item
-        android:id="@+id/menu_opcion_recientes"
-        android:icon="@drawable/icon_new"
-        android:title="@string/m_s_recientes" />
-    <item
-        android:id="@+id/menu_opcion_acerca"
-        android:icon="@drawable/icon_info"
-        android:title="@string/acerca" />
+
 
 </menu>

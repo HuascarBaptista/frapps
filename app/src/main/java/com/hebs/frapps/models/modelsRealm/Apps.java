@@ -1,7 +1,10 @@
 package com.hebs.frapps.models.modelsRealm;
 
+import org.parceler.Parcel;
+
 import java.util.Date;
 
+import io.realm.AppsRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
@@ -14,6 +17,9 @@ import io.realm.annotations.Required;
  * Date: 25/8/2016
  * Time: 3:17 AM
  */
+@Parcel(implementations = {AppsRealmProxy.class},
+        value = Parcel.Serialization.BEAN,
+        analyze = {Apps.class})
 public class Apps extends RealmObject {
     @PrimaryKey
     private int _id;
@@ -26,7 +32,7 @@ public class Apps extends RealmObject {
     private String _descripcion;
     private String _link;
     private Date _fechaCreacion;
-    private Artistas _creador;
+    private Creadores _creador;
     private String _icono;
     private String _imagen;
     private String _imagen_pequena;
@@ -100,11 +106,11 @@ public class Apps extends RealmObject {
         this._fechaCreacion = _fechaCreacion;
     }
 
-    public Artistas get_creador() {
+    public Creadores get_creador() {
         return _creador;
     }
 
-    public void set_creador(Artistas _creador) {
+    public void set_creador(Creadores _creador) {
         this._creador = _creador;
     }
 

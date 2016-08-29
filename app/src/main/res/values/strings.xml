@@ -11,4 +11,16 @@
     <string name="navigation_drawer_open">Abierto</string>
     <string name="navigation_drawer_close">Cerrado</string>
     <string name="desarrolladores">Desarrolladores</string>
+    <string name="compartirTexto">Encontré esta aplicación %1$s desarrollada por %2$s gracias a ®Frapps. Visitala en: %3$s</string>
+    <string name="compartirPor">Compartir por</string>
+    <string name="aplicacion_invalida">Esta aplicación es invalida</string>
+    <string name="servicio_no_emitio">El servicio no emitió respuesta alguna.</string>
+    <string name="servicio_error">Lo sentimos hubo un error en el servicio.</string>
+    <string name="sin_conexion">No posee conexión a internet.</string>
+    <string name="categorias">Categorías</string>
+    <string name="cargando">Cargando</string>
+    <string name="espere">Espere un momento por favor...</string>
+    <string name="todas">Todas</string>
+    <string name="ver_m_s">Ver más</string>
+    <string name="actualizar">Actualizar</string>
 </resources>

@@ -10,6 +10,8 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
  * Date: 26/8/2016
  * Time: 1:18 AM
  */
+//Clase que verifica si la data no ha cambiado
+
 @SharedPref(SharedPref.Scope.UNIQUE)
 public interface MyShared {
 

@@ -9,6 +9,7 @@ import com.hebs.frapps.models.modelsRealm.ParBusqueda;
 
 import java.util.ArrayList;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -28,16 +29,16 @@ public class BusquedaModel {
             @Override
             public void execute(Realm realm) {
                 Busquedas result = realm.where(Busquedas.class).equalTo("_nombre", busqueda).findFirst();
-                Busquedas artista;
+                Busquedas creador;
                 if (result == null) {
 
 
-                    artista = realm.createObject(Busquedas.class);
-                    artista.set_nombre(busqueda);
+                    creador = realm.createObject(Busquedas.class);
+                    creador.set_nombre(busqueda);
                 } else {
-                    artista = result;
+                    creador = result;
                 }
-                artista.set_time(System.currentTimeMillis());
+                creador.set_time(System.currentTimeMillis());
             }
         });
 
@@ -49,16 +50,17 @@ public class BusquedaModel {
         Realm realm = UniversalModel.crearConexion(context);
 
 
-        Busquedas _resultado = realm.where(Busquedas.class).contains("_nombre", nombre).findFirst();
+        Busquedas _resultado = realm.where(Busquedas.class).contains("_nombre", nombre, Case.INSENSITIVE).findFirst();
 
         return _resultado;
     }
 
+    //Busco por nombres de aplicaciones y por busquedas realizadas, si son aplicaciones les coloco el id para saber a dnd voy si le da click
     public static ArrayList<ParBusqueda> obtenerTodasNombre(Context context, String nombre, MatrixCursor cursor) {
         Realm realm = UniversalModel.crearConexion(context);
 
-        RealmResults<Busquedas> _resultado = realm.where(Busquedas.class).contains("_nombre", nombre).findAllSorted("_nombre", Sort.ASCENDING);
-        RealmResults<Apps> _resultado2 = realm.where(Apps.class).contains("_nombre", nombre).findAllSorted("_nombre", Sort.ASCENDING);
+        RealmResults<Busquedas> _resultado = realm.where(Busquedas.class).contains("_nombre", nombre, Case.INSENSITIVE).findAllSorted("_nombre", Sort.ASCENDING);
+        RealmResults<Apps> _resultado2 = realm.where(Apps.class).contains("_nombre", nombre, Case.INSENSITIVE).findAllSorted("_nombreLargo", Sort.ASCENDING);
 
         ArrayList<ParBusqueda> _aux = new ArrayList<>();
 
@@ -77,6 +79,7 @@ public class BusquedaModel {
 
 
             } else {
+                //Simulando el id y me sirve cmo flag
                 _temp[0] = "-1";
                 _temp[1] = _resultado.get(j).get_nombre() + "";
 

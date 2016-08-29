@@ -1,8 +1,12 @@
 package com.hebs.frapps.views;
 
+import android.animation.Animator;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +31,8 @@ public class Activity_App_Detalle extends BaseActivity {
     @ViewById
     TextView titulo_app;
     @ViewById
+    TextView url_app;
+    @ViewById
     TextView desarrollador_app;
     @ViewById
     TextView descripcion;
@@ -36,27 +42,77 @@ public class Activity_App_Detalle extends BaseActivity {
     @Extra
     int idApp;
 
+    @ViewById(R.id.drawer_layout)
+    DrawerLayout drawer;
+
     AppDetallePresenter appDetallePresenter;
 
     @AfterViews
-    public void cargarInformacion() {
+    public void cargarInformacionAppBar() {
+        super.setDrawer(drawer);
+        super.cargarAppBar(false, "");
+
         cargandoDialog(true);
         appDetallePresenter = new AppDetallePresenter(this);
-        boolean _cargo = appDetallePresenter.llenarInformacion(idApp, titulo_app, icono_app, desarrollador_app, descripcion, compartir);
+        //Lleno toda la info y seteo los clicks
+        boolean _cargo = appDetallePresenter.llenarInformacion(idApp, titulo_app, icono_app, desarrollador_app, descripcion, compartir, url_app);
         cargandoDialog(false);
 
+        animarFloatingButton();
+
         if (!_cargo) {
-            Toast.makeText(this, "Esta aplicación es invalida", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.aplicacion_invalida), Toast.LENGTH_SHORT).show();
             finish();
+        }
+    }
+
+    //Animo el boton de action floating
+    private void animarFloatingButton() {
+
+        compartir.setScaleX(0);
+        compartir.setScaleY(0);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final Interpolator interpolador = AnimationUtils.loadInterpolator(getBaseContext(),
+                    android.R.interpolator.fast_out_slow_in);
+
+            compartir.animate()
+                    .scaleX(1)
+                    .scaleY(1)
+                    .setInterpolator(interpolador)
+                    .setDuration(600)
+                    .setStartDelay(1000)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setDrawer(drawer);
-        super.cargarAppBar();
+        setupWindowInAnimations();
+
     }
+
 }
 
 
