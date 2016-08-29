@@ -54,6 +54,7 @@ public class Activity_Splash extends Activity {
                     public void onAnimationEnd(Animator animation) {
                         Activity_Categorias_Todas_.intent(getBaseContext()).flags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK).start();
                         overridePendingTransition(0, 0); //0 for no animation
+                        finish();
 
                     }
 

@@ -14,6 +14,7 @@ import com.hebs.frapps.models.AppModel;
 import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.views.Activity_App_Detalle;
 import com.koushikdutta.ion.Ion;
+import com.novoda.merlin.MerlinsBeard;
 
 /**
  * Created by Android Studio.
@@ -24,6 +25,7 @@ import com.koushikdutta.ion.Ion;
  */
 public class AppDetallePresenter {
     private Activity_App_Detalle _view;
+    private MerlinsBeard merlinsBeard;
 
     public AppDetallePresenter(Activity_App_Detalle view) {
         this._view = view;
@@ -49,10 +51,19 @@ public class AppDetallePresenter {
             desarrollador_app.setText(_app.get_creador().get_firma());
 
             //Descaego la imagen
-            if (!_app.get_imagen().equals(""))
-                Ion.with(icono_app)
-                        .animateIn(AnimationUtils.loadAnimation(get_view(), android.R.anim.fade_in))
-                        .load(_app.get_imagen());
+            if (!_app.get_imagen().equals("")) {
+
+                merlinsBeard = MerlinsBeard.from(this._view.getBaseContext());
+                if (merlinsBeard.isConnected()) {
+                    Ion.with(icono_app)
+                            .animateIn(AnimationUtils.loadAnimation(get_view(), android.R.anim.fade_in))
+                            .load(_app.get_imagen());
+                } else {
+                    Ion.with(icono_app)
+                            .animateIn(AnimationUtils.loadAnimation(get_view(), android.R.anim.fade_in))
+                            .load(_app.get_icono());
+                }
+            }
 
             get_view().cambiarAppBarTitle(_app.get_nombre());
 
