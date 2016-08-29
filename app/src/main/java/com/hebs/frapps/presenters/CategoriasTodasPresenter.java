@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hebs.frapps.R;
-import com.hebs.frapps.adapters.CategoriasAdapter;
+import com.hebs.frapps.adapters.CategoriasGeneralAdapter;
 import com.hebs.frapps.models.AppModel;
 import com.hebs.frapps.models.CategoriaModel;
 import com.hebs.frapps.models.CreadorModel;
@@ -123,7 +123,7 @@ public class CategoriasTodasPresenter {
         //Creo mi vista de dos recyclers, uno vertical y otro horizontal
         BasePresenter.obtenerInformacionEnHash(get_view(), _titulos, _hashDeApps, false, true, false);
 
-        get_view().recyclerAdapter = new CategoriasAdapter(get_view(), _titulos, _grid, _hashDeApps, false);
+        get_view().recyclerAdapter = new CategoriasGeneralAdapter(get_view(), _titulos, _grid, _hashDeApps, false);
         get_view().recyclerView.setItemAnimator(new SlideInUpAnimator());
 
         get_view().recyclerView.setAdapter(get_view().recyclerAdapter);

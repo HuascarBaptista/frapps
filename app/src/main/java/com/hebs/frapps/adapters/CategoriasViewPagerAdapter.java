@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 //Hace el tratamiento de los fragmentes del viewpagar de las categorias
-public class CategoriasFragmentPagerAdapter extends FragmentPagerAdapter {
+public class CategoriasViewPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<String> _titulos;
     private HashMap<String, ArrayList<Apps>> _data;
 
-    public CategoriasFragmentPagerAdapter(FragmentManager fm, ArrayList<String> _titulos, HashMap<String, ArrayList<Apps>> _data) {
+    public CategoriasViewPagerAdapter(FragmentManager fm, ArrayList<String> _titulos, HashMap<String, ArrayList<Apps>> _data) {
         super(fm);
         this._titulos = _titulos;
         this._data = _data;

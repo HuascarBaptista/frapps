@@ -33,7 +33,7 @@ import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
  */
 
 //Me carga la vista vertical de las categorias
-public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.RecyclerViewHoldersOutside> {
+public class CategoriasGeneralAdapter extends RecyclerView.Adapter<CategoriasGeneralAdapter.RecyclerViewHoldersOutside> {
     private final Activity _context;
     ArrayList<String> data;
     HashMap<String, ArrayList<Apps>> dataApps;
@@ -41,7 +41,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Re
     boolean desarrolladores = false;
     private int lastPosition = -1;
 
-    public CategoriasAdapter(Activity context, ArrayList<String> data, boolean grid, HashMap<String, ArrayList<Apps>> dataApps, boolean desarrolladores) {
+    public CategoriasGeneralAdapter(Activity context, ArrayList<String> data, boolean grid, HashMap<String, ArrayList<Apps>> dataApps, boolean desarrolladores) {
         this.dataApps = dataApps;
         this.data = data;
         this._grid = grid;
@@ -56,7 +56,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Re
     @Override
     public RecyclerViewHoldersOutside onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_recycler_categorias, null);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.categorias_recycler_vertical, null);
         RecyclerViewHoldersOutside rcv = new RecyclerViewHoldersOutside(layoutView, _grid);
         return rcv;
     }
@@ -118,7 +118,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Re
         public TextView tituloCategoria;
         public RecyclerView recyclerViewInside;
         public boolean _grid = false;
-        public CategoriasInsideAdapter _adapter;
+        public CategoriasRecyclerHorizontalAdapter _adapter;
 
         public RecyclerViewHoldersOutside(View itemView, boolean grid) {
             super(itemView);
@@ -137,7 +137,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Re
 
             }
 
-            _adapter = new CategoriasInsideAdapter(_context);
+            _adapter = new CategoriasRecyclerHorizontalAdapter(_context);
             recyclerViewInside.setItemAnimator(new SlideInLeftAnimator());
 
             recyclerViewInside.setAdapter(_adapter);

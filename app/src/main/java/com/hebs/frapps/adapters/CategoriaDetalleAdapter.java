@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Date: 29/8/2016
  * Time: 3:41 AM
  */
-public class CategoriaAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
+public class CategoriaDetalleAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
     private final Animation animFadeIn;
     public Activity _context;
     private ArrayList<Apps> mDataList;
@@ -35,7 +35,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<RecyclerViewHolders> 
     private Animation shake;
     private View _vista;
 
-    public CategoriaAdapter(Activity context, ArrayList<Apps> data) {
+    public CategoriaDetalleAdapter(Activity context, ArrayList<Apps> data) {
         this._context = context;
         animFadeIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
         if (mDataList != data) {

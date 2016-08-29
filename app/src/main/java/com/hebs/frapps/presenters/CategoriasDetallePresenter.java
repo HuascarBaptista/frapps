@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.hebs.frapps.R;
-import com.hebs.frapps.adapters.CategoriaAdapter;
+import com.hebs.frapps.adapters.CategoriaDetalleAdapter;
 import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.utils.GridAutofitLayoutManager;
 import com.hebs.frapps.views.FragmentCategoria;
@@ -70,7 +70,7 @@ public class CategoriasDetallePresenter {
         }
 
 
-        _este.recyclerAdapter = new CategoriaAdapter(get_view(), data);
+        _este.recyclerAdapter = new CategoriaDetalleAdapter(get_view(), data);
         _este.recyclerView.setAdapter(_este.recyclerAdapter);
 
     }

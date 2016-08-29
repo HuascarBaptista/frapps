@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.hebs.frapps.R;
-import com.hebs.frapps.adapters.CategoriaAdapter;
+import com.hebs.frapps.adapters.CategoriaDetalleAdapter;
 import com.hebs.frapps.models.AppModel;
 import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.utils.GridAutofitLayoutManager;
@@ -67,7 +67,7 @@ public class AppsBusquedaPresenter {
 
         _este.recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        _este.recyclerAdapter = new CategoriaAdapter(_view, data);
+        _este.recyclerAdapter = new CategoriaDetalleAdapter(_view, data);
         _este.recyclerView.setItemAnimator(new SlideInLeftAnimator());
 
         _este.recyclerView.setAdapter(_este.recyclerAdapter);
@@ -96,7 +96,7 @@ public class AppsBusquedaPresenter {
 
         get_view().recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        get_view().recyclerAdapter = new CategoriaAdapter(get_view(), data);
+        get_view().recyclerAdapter = new CategoriaDetalleAdapter(get_view(), data);
         //Seteo la animacion
         get_view().recyclerView.setItemAnimator(new SlideInLeftAnimator());
 

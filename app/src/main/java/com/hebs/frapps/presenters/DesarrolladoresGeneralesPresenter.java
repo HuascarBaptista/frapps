@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.animation.OvershootInterpolator;
 
 import com.hebs.frapps.R;
-import com.hebs.frapps.adapters.CategoriasAdapter;
+import com.hebs.frapps.adapters.CategoriasGeneralAdapter;
 import com.hebs.frapps.models.AppModel;
 import com.hebs.frapps.models.CreadorModel;
 import com.hebs.frapps.models.modelsRealm.Apps;
@@ -126,7 +126,7 @@ public class DesarrolladoresGeneralesPresenter {
 
 
 //Inicializo la vista de los desarrolladores, igual q la de categorias Todas
-        get_view().recyclerAdapter = new CategoriasAdapter(get_view(), _titulos, _grid, _hashDeApps, true);
+        get_view().recyclerAdapter = new CategoriasGeneralAdapter(get_view(), _titulos, _grid, _hashDeApps, true);
         get_view().recyclerView.setAdapter(get_view().recyclerAdapter);
 
         get_view().informacionActualizada();

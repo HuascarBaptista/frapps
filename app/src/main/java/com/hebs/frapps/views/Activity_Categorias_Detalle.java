@@ -10,7 +10,7 @@ import android.view.Window;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.hebs.frapps.R;
-import com.hebs.frapps.adapters.CategoriasFragmentPagerAdapter;
+import com.hebs.frapps.adapters.CategoriasViewPagerAdapter;
 import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.presenters.CategoriasDetallePresenter;
 import com.hebs.frapps.utils.MyShared_;
@@ -86,7 +86,7 @@ public class Activity_Categorias_Detalle extends BaseActivity {
 
 
         //Sete el viewpager del los fragmnets
-        viewPager.setAdapter(new CategoriasFragmentPagerAdapter(
+        viewPager.setAdapter(new CategoriasViewPagerAdapter(
                 getSupportFragmentManager(), _titulos, _data));
 
         //La animacion del viewpager

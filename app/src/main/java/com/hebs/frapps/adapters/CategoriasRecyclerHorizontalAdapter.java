@@ -21,14 +21,14 @@ import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
 
 //Me carga la vista horizaontal de las categorias
-public class CategoriasInsideAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
+public class CategoriasRecyclerHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
 
     private final Animation animFadeIn;
     public Activity _context;
     private ArrayList<Apps> mDataList;
     private int mRowIndex = -1;
 
-    public CategoriasInsideAdapter(Activity context) {
+    public CategoriasRecyclerHorizontalAdapter(Activity context) {
         this._context = context;
         animFadeIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
     }
