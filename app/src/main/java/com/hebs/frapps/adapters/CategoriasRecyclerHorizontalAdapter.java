@@ -1,6 +1,5 @@
 package com.hebs.frapps.adapters;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +23,8 @@ import java.util.ArrayList;
 public class CategoriasRecyclerHorizontalAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
 
     private final Animation animFadeIn;
+    private final Animation shake;
+    public View _vista;
     public Activity _context;
     private ArrayList<Apps> mDataList;
     private int mRowIndex = -1;
@@ -31,6 +32,27 @@ public class CategoriasRecyclerHorizontalAdapter extends RecyclerView.Adapter<Re
     public CategoriasRecyclerHorizontalAdapter(Activity context) {
         this._context = context;
         animFadeIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+
+        //Animacion de shake cuando se le da click
+        shake = AnimationUtils.loadAnimation(context, R.anim.shakeanim);
+        shake.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                //Functionality here
+                BasePresenter.irDetalleApp(_context, (int) _vista.getTag());
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     public void setData(ArrayList<Apps> data) {
@@ -74,60 +96,12 @@ public class CategoriasRecyclerHorizontalAdapter extends RecyclerView.Adapter<Re
 
         holder.itemView.setTag(mDataList.get(position).get_id());
 
-        //La animacion del elemento horizontal y saber a dnd voy
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                /*RotateAnimation ranim = (RotateAnimation)AnimationUtils.loadAnimation(_context, R.anim.up_from_bottom);
-                ranim.setFillAfter(true);
-                view.setAnimation(ranim);*/
+                _vista = view;
+                view.startAnimation(shake);
 
-                //Animacion de un libro abriendo
-                view.animate().rotationX(0.f).rotationY(-80.f).setDuration(800).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        BasePresenter.irDetalleApp(_context, (int) view.getTag());
-
-                        view.animate().rotationX(0.f).rotationY(0.f).setStartDelay(1000).setListener(new Animator.AnimatorListener() {
-
-                            @Override
-                            public void onAnimationStart(Animator animator) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animator animator) {
-
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animator) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animator) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                });
             }
         });
     }
