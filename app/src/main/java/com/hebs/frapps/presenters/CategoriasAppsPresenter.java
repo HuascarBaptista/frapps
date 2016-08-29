@@ -1,16 +1,20 @@
 package com.hebs.frapps.presenters;
 
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.hebs.frapps.R;
+import com.hebs.frapps.adapters.CategoriasAdapter;
 import com.hebs.frapps.models.AppModel;
 import com.hebs.frapps.models.ArtistaModel;
 import com.hebs.frapps.models.CategoriaModel;
 import com.hebs.frapps.models.modelsRealm.Artistas;
 import com.hebs.frapps.models.modelsRealm.Categorias;
-import com.hebs.frapps.views.Activity_Categorias_Apps;
+import com.hebs.frapps.views.Activity_Categorias_Todas;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.novoda.merlin.MerlinsBeard;
@@ -18,6 +22,8 @@ import com.novoda.merlin.MerlinsBeard;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import io.realm.RealmResults;
 
 /**
  * Created by Android Studio.
@@ -28,20 +34,20 @@ import java.util.Date;
  */
 public class CategoriasAppsPresenter {
 
-    private Activity_Categorias_Apps _view;
+    private Activity_Categorias_Todas _view;
     private MerlinsBeard merlinsBeard;
 
 
-    public CategoriasAppsPresenter(Activity_Categorias_Apps view) {
+    public CategoriasAppsPresenter(Activity_Categorias_Todas view) {
         this._view = view;
 
     }
 
-    public Activity_Categorias_Apps get_view() {
+    public Activity_Categorias_Todas get_view() {
         return _view;
     }
 
-    public void set_view(Activity_Categorias_Apps _view) {
+    public void set_view(Activity_Categorias_Todas _view) {
         this._view = _view;
     }
 
@@ -71,7 +77,7 @@ public class CategoriasAppsPresenter {
                             } else {
                                 Toast.makeText(get_view(), "Lo sentimos hubo un error en el servicio. " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            get_view().actualizarInformacion(CategoriaModel.obtenerTodasXNombre(get_view(), true));
+                            manejarInformacion();
 
 
                         }
@@ -80,11 +86,43 @@ public class CategoriasAppsPresenter {
             Snackbar.make(get_view().vista_superior, "No posee conexión a internet.", Snackbar.LENGTH_LONG)
                     .show();
             //Llamar a la vista para que actualice
-            get_view().actualizarInformacion(CategoriaModel.obtenerTodasXNombre(get_view(), true));
+            manejarInformacion();
         }
     }
 
+    public void manejarInformacion() {
+        get_view().recyclerView.setHasFixedSize(true);
 
+        //Si es tablet entonces grid si no entonces linear
+      /*
+        GridAutofitLayoutManager layoutManager = new GridAutofitLayoutManager(get_view(), 0);
+        get_view().recyclerView.setLayoutManager(layoutManager);
+         */
+
+        boolean _grid = false;
+        if (get_view().getResources().getBoolean(R.bool.portrait_only)) {
+            _grid = false;
+        } else {
+            _grid = true;
+
+        }
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(get_view(), LinearLayoutManager.VERTICAL, false);
+        get_view().recyclerView.setLayoutManager(layoutManager);
+
+
+        get_view().recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        RealmResults<Categorias> data = CategoriaModel.obtenerTodasXNombre(get_view(), true);
+
+        get_view().recyclerAdapter = new CategoriasAdapter(get_view(), data, _grid);
+        get_view().recyclerView.setAdapter(get_view().recyclerAdapter);
+
+        get_view().informacionActualizada();
+
+
+    }
     private void guardarInformacion(JsonObject s) {
         if (s.has("feed"))
             if (s.getAsJsonObject("feed").has("entry")) {
@@ -93,6 +131,7 @@ public class CategoriasAppsPresenter {
                 Categorias _categoria;
                 int id = -1;
                 String nombre = "";
+                String nombreLargo = "";
                 String descripcion = "";
                 String link = "";
                 String fechaString = "";
@@ -140,10 +179,16 @@ public class CategoriasAppsPresenter {
                             }
                         }
                     }
+                    if (_app.has("im:name")) {
+
+                        if (_app.getAsJsonObject("im:name").has("label")) {
+                            nombre = _app.getAsJsonObject("im:name").get("label").getAsString();
+                        }
+                    }
                     if (_app.has("title")) {
 
                         if (_app.getAsJsonObject("title").has("label")) {
-                            nombre = _app.getAsJsonObject("title").get("label").getAsString();
+                            nombreLargo = _app.getAsJsonObject("title").get("label").getAsString();
                         }
                     }
                     if (_app.has("summary")) {
@@ -211,13 +256,15 @@ public class CategoriasAppsPresenter {
 
                     }
 
-                    AppModel.crearApp(get_view(), _categoria, id, nombre, descripcion, link, fechaCreacion, artista, icono, imagen_pequena,imagen);
+                    AppModel.crearApp(get_view(), _categoria, id, nombre, nombreLargo, descripcion, link, fechaCreacion, artista, icono, imagen_pequena, imagen);
 
                 }
                 get_view().myPrefs.json_top_free_apps().put(s.toString());
             }
 
     }
+
+
 
     /*public void pruebaAgregarCategoria(){
         CategoriaModel.crearActualizarCategorica(get_view(),1,"Probando ");

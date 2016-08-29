@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_opcion_categorias"
+        android:icon="@drawable/icon_category"
+        android:title="@string/categor_as" />
+    <item
+        android:id="@+id/menu_opcion_desarrolladores"
+        android:icon="@drawable/icon_work"
+        android:title="@string/desarrolladores" />
+    <item
+        android:id="@+id/menu_opcion_recientes"
+        android:icon="@drawable/icon_new"
+        android:title="@string/m_s_recientes" />
+    <item
+        android:id="@+id/menu_opcion_acerca"
+        android:icon="@drawable/icon_info"
+        android:title="@string/acerca" />
+
+</menu>

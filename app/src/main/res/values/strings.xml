@@ -2,4 +2,13 @@
     <string name="app_name">Frapps</string>
     <string name="servicio_top_free_apps">https://itunes.apple.com/us/rss/topfreeapplications/limit=20/json</string>
     <string name="alimentandonos_de_informaci_n">Alimentandonos de información…</string>
+    <string name="visitar_p_gina_web">Visitar página web</string>
+    <string name="buscar">Buscar</string>
+    <string name="search_hint">Buscar aplicación</string>
+    <string name="categor_as">Categorías</string>
+    <string name="m_s_recientes">Más recientes</string>
+    <string name="acerca">Acerca</string>
+    <string name="navigation_drawer_open">Abierto</string>
+    <string name="navigation_drawer_close">Cerrado</string>
+    <string name="desarrolladores">Desarrolladores</string>
 </resources>

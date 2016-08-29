@@ -1,6 +1,7 @@
 package com.hebs.frapps.models;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.hebs.frapps.models.modelsRealm.Apps;
 import com.hebs.frapps.models.modelsRealm.Artistas;
@@ -23,6 +24,7 @@ public class AppModel {
     public static Apps crearApp(Context context, final Categorias categoria,
                                 final int id,
                                 final String nombre,
+                                final String nombreLargo,
                                 final String descripcion,
                                 final String link,
                                 final Date fechaCreacion,
@@ -45,6 +47,8 @@ public class AppModel {
                     app = result;
                 }
                 app.set_nombre(nombre);
+                Log.e("NombreLargo", nombreLargo + " Corto " + nombre);
+                app.set_nombreLargo(nombreLargo);
                 app.set_descripcion(descripcion);
                 app.set_link(link);
                 app.set_fechaCreacion(fechaCreacion);
@@ -86,6 +90,14 @@ public class AppModel {
 
     }
 
+    public static RealmResults<Apps> obtenerTodasXNombreDeCategoria(Context context, String nombreCategoria) {
+        Realm realm = UniversalModel.crearConexion(context);
+
+        RealmResults<Apps> _resultado = realm.where(Apps.class).equalTo("_categoria._nombre", nombreCategoria).findAllSorted("_nombre");
+
+        return _resultado;
+
+    }
     public static RealmResults<Apps> obtenerTodasXNombre(Context context, boolean asc) {
         Realm realm = UniversalModel.crearConexion(context);
 

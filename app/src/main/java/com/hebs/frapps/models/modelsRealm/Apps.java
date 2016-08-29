@@ -21,7 +21,7 @@ public class Apps extends RealmObject {
     @Required
     @Index
     private String _nombre;
-
+    private String _nombreLargo;
     private Categorias _categoria;
     private String _descripcion;
     private String _link;
@@ -29,6 +29,19 @@ public class Apps extends RealmObject {
     private Artistas _creador;
     private String _icono;
     private String _imagen;
+    private String _imagen_pequena;
+
+    public Apps() {
+
+    }
+
+    public String get_nombreLargo() {
+        return _nombreLargo;
+    }
+
+    public void set_nombreLargo(String _nombreLargo) {
+        this._nombreLargo = _nombreLargo;
+    }
 
     public String get_imagen_pequena() {
         return _imagen_pequena;
@@ -36,12 +49,6 @@ public class Apps extends RealmObject {
 
     public void set_imagen_pequena(String _imagen_pequena) {
         this._imagen_pequena = _imagen_pequena;
-    }
-
-    private String _imagen_pequena;
-
-    public Apps() {
-
     }
 
     public String get_icono() {

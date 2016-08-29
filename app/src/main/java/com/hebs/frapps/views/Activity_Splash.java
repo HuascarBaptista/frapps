@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 import android.view.Window;
@@ -34,13 +33,16 @@ public class Activity_Splash extends Activity {
     @AfterViews
     protected void iniciarAnimacion() {
 
+        if (relativeSuperior != null) {
+
+
         relativeSuperior.animate()
                 .alpha(0.0f)
                 .scaleX(0.1f)
                 .scaleY(0.1f)
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .setDuration(1000)
-                .setStartDelay(3000)
+                .setStartDelay(2000)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -49,7 +51,7 @@ public class Activity_Splash extends Activity {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        Activity_Categorias_Apps_.intent(getBaseContext()).flags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK).start();
+                        Activity_Categorias_Todas_.intent(getBaseContext()).flags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK).start();
                         overridePendingTransition(0, 0); //0 for no animation
 
                     }
@@ -63,5 +65,6 @@ public class Activity_Splash extends Activity {
                     }
                 })
                 .start();
+        }
     }
 }
